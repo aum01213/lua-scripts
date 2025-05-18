@@ -63,8 +63,8 @@ autoFarmLabel.Parent = contentFrame
 
 -- Toggle Button (วงกลมเล็กลง)
 local autoFarmToggle = Instance.new("TextButton")
-autoFarmToggle.Size = UDim2.new(0, 24, 0, 24)
-autoFarmToggle.Position = UDim2.new(0, 160, 0, 33)
+autoFarmToggle.Size = UDim2.new(0, 20, 0, 20)
+autoFarmToggle.Position = UDim2.new(0, 180, 0, 40)
 autoFarmToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
 autoFarmToggle.Text = ""
 autoFarmToggle.Name = "AutoFarmToggle"
@@ -141,4 +141,5 @@ UserInputService.InputEnded:Connect(function(input)
 		dragging = false
 	end
 end)
+
 
