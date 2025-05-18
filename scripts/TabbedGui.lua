@@ -24,7 +24,7 @@ topBar.Name = "TopBar"
 topBar.Parent = mainFrame
 
 local topBarLabel = Instance.new("TextLabel")
-topBarLabel.Text = "Drag here"
+topBarLabel.Text = "Aum Pro V.1"
 topBarLabel.Size = UDim2.new(1, 0, 1, 0)
 topBarLabel.BackgroundTransparency = 1
 topBarLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
