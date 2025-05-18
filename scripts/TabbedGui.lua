@@ -1,71 +1,144 @@
--- Create GUI elements
 local player = game.Players.LocalPlayer
-local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+local gui = Instance.new("ScreenGui")
 gui.Name = "TabbedUI"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
 
 -- Main Frame
-local mainFrame = Instance.new("Frame", gui)
+local mainFrame = Instance.new("Frame")
 mainFrame.Size = UDim2.new(0, 400, 0, 300)
-mainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
-mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+mainFrame.Position = UDim2.new(0.3, 0, 0.3, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(32, 34, 37)
 mainFrame.BorderSizePixel = 0
 mainFrame.Name = "MainFrame"
+mainFrame.Parent = gui
+mainFrame.Active = true
 
--- Tab Buttons Container
-local tabBar = Instance.new("Frame", mainFrame)
-tabBar.Size = UDim2.new(1, 0, 0, 40)
-tabBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-tabBar.BorderSizePixel = 0
+-- Top Bar (ลาก GUI)
+local topBar = Instance.new("Frame")
+topBar.Size = UDim2.new(1, 0, 0, 40)
+topBar.Position = UDim2.new(0, 0, 0, 0)
+topBar.BackgroundColor3 = Color3.fromRGB(54, 57, 63)
+topBar.BorderSizePixel = 0
+topBar.Name = "TopBar"
+topBar.Parent = mainFrame
 
--- Tab Buttons
-local tabs = {}
-local tabNames = {"Home", "Settings"}
+local topBarLabel = Instance.new("TextLabel")
+topBarLabel.Text = "Drag here"
+topBarLabel.Size = UDim2.new(1, 0, 1, 0)
+topBarLabel.BackgroundTransparency = 1
+topBarLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+topBarLabel.Font = Enum.Font.GothamBold
+topBarLabel.TextSize = 16
+topBarLabel.Parent = topBar
 
-for i, name in pairs(tabNames) do
-    local button = Instance.new("TextButton", tabBar)
-    button.Size = UDim2.new(0, 100, 1, 0)
-    button.Position = UDim2.new(0, (i - 1) * 100, 0, 0)
-    button.Text = name
-    button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.Name = name .. "TabButton"
-    tabs[name] = button
-end
+-- Sidebar (พื้นที่ว่าง ซ้าย)
+local sideBar = Instance.new("Frame")
+sideBar.Size = UDim2.new(0, 100, 1, -40)
+sideBar.Position = UDim2.new(0, 0, 0, 40)
+sideBar.BackgroundColor3 = Color3.fromRGB(47, 49, 54)
+sideBar.BorderSizePixel = 0
+sideBar.Name = "SideBar"
+sideBar.Parent = mainFrame
 
--- Tab Pages
-local pages = {}
-for _, name in pairs(tabNames) do
-    local page = Instance.new("Frame", mainFrame)
-    page.Size = UDim2.new(1, 0, 1, -40)
-    page.Position = UDim2.new(0, 0, 0, 40)
-    page.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    page.Name = name .. "Page"
-    page.Visible = false
+-- Content Area (ขวา)
+local contentFrame = Instance.new("Frame")
+contentFrame.Size = UDim2.new(1, -100, 1, -40)
+contentFrame.Position = UDim2.new(0, 100, 0, 40)
+contentFrame.BackgroundColor3 = Color3.fromRGB(54, 57, 63)
+contentFrame.Name = "AutoContent"
+contentFrame.Parent = mainFrame
 
-    -- Example Content
-    local label = Instance.new("TextLabel", page)
-    label.Text = name .. " Content Here"
-    label.Size = UDim2.new(1, 0, 1, 0)
-    label.TextColor3 = Color3.new(1, 1, 1)
-    label.BackgroundTransparency = 1
-    label.TextScaled = true
+-- Label "Auto Farm"
+local autoFarmLabel = Instance.new("TextLabel")
+autoFarmLabel.Text = "Auto Farm"
+autoFarmLabel.Size = UDim2.new(0, 120, 0, 40)
+autoFarmLabel.Position = UDim2.new(0, 30, 0, 30)
+autoFarmLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
+autoFarmLabel.BackgroundTransparency = 1
+autoFarmLabel.TextXAlignment = Enum.TextXAlignment.Left
+autoFarmLabel.Font = Enum.Font.GothamSemibold
+autoFarmLabel.TextSize = 22
+autoFarmLabel.Parent = contentFrame
 
-    pages[name] = page
-end
+-- Toggle Button (วงกลมเล็กลง)
+local autoFarmToggle = Instance.new("TextButton")
+autoFarmToggle.Size = UDim2.new(0, 24, 0, 24)
+autoFarmToggle.Position = UDim2.new(0, 160, 0, 33)
+autoFarmToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
+autoFarmToggle.Text = ""
+autoFarmToggle.Name = "AutoFarmToggle"
+autoFarmToggle.AutoButtonColor = false
+autoFarmToggle.Parent = contentFrame
+autoFarmToggle.BorderSizePixel = 0
+autoFarmToggle.ZIndex = 2
+autoFarmToggle.ClipsDescendants = true
 
--- Tab Switching Logic
-local function showTab(tabName)
-    for name, page in pairs(pages) do
-        page.Visible = (name == tabName)
-    end
-end
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(1, 0) -- ทำเป็นวงกลม
+uiCorner.Parent = autoFarmToggle
 
--- Connect Buttons
-for name, button in pairs(tabs) do
-    button.MouseButton1Click:Connect(function()
-        showTab(name)
-    end)
-end
+local border = Instance.new("UIStroke")
+border.Color = Color3.fromRGB(120, 120, 120)
+border.Thickness = 2
+border.Parent = autoFarmToggle
 
--- Default Tab
-showTab("Home")
+local checkMark = Instance.new("Frame")
+checkMark.Size = UDim2.new(1, -10, 1, -10)
+checkMark.Position = UDim2.new(0, 5, 0, 5)
+checkMark.BackgroundColor3 = Color3.fromRGB(40, 200, 120)
+checkMark.Visible = false
+checkMark.Name = "CheckMark"
+checkMark.Parent = autoFarmToggle
+checkMark.ZIndex = 3
+checkMark.ClipsDescendants = true
+checkMark.BorderSizePixel = 0
+
+local checkCorner = Instance.new("UICorner")
+checkCorner.CornerRadius = UDim.new(1, 0) -- วงกลมเหมือนกัน
+checkCorner.Parent = checkMark
+
+-- Toggle logic
+local isAutoFarmOn = false
+autoFarmToggle.MouseButton1Click:Connect(function()
+	isAutoFarmOn = not isAutoFarmOn
+	checkMark.Visible = isAutoFarmOn
+	if isAutoFarmOn then
+		autoFarmToggle.BackgroundColor3 = Color3.fromRGB(50, 150, 70)
+	else
+		autoFarmToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
+	end
+	print("Auto Farm is", isAutoFarmOn and "ON" or "OFF")
+end)
+
+-- Dragging logic for topBar
+local UserInputService = game:GetService("UserInputService")
+local dragging = false
+local dragStart, startPos
+
+topBar.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPos = mainFrame.Position
+	end
+end)
+
+topBar.InputChanged:Connect(function(input)
+	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+		local delta = input.Position - dragStart
+		mainFrame.Position = UDim2.new(
+			startPos.X.Scale,
+			startPos.X.Offset + delta.X,
+			startPos.Y.Scale,
+			startPos.Y.Offset + delta.Y
+		)
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = false
+	end
+end)
+
