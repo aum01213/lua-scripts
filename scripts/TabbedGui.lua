@@ -142,4 +142,33 @@ UserInputService.InputEnded:Connect(function(input)
 	end
 end)
 
+-- Auto Farm Loop: ส่งคำสั่ง RemoteEvent ทุก 0.5 วินาทีเมื่อเปิด
+spawn(function()
+	while true do
+		wait(0.01)
+		if isAutoFarmOn then
+			local args = {
+				[1] = {
+					[1] = {
+						[1] = "\5",
+						[2] = "Combat",
+						[3] = 2,
+						[4] = false,
+						[5] = player.Character and player.Character:FindFirstChild("Combat"),
+						[6] = "Melee",
+						[7] = {
+							[1] = Vector3.new(3383.283447265625, 135.72975158691406, 1761.7642822265625),
+							[2] = Vector3.new(0.057197459042072296, -0.12832456827163696, 0.9900814294815063)
+						}
+					}
+				}
+			}
+			local remote = game:GetService("ReplicatedStorage"):FindFirstChild("RemoteEvent")
+			if remote then
+				remote:FireServer(unpack(args))
+			end
+		end
+	end
+end))
+
 
